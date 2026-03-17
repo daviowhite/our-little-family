@@ -336,17 +336,17 @@ export default function App() {
 
   if (!isInitialized) return null;
 
-  if (!activeProfile) {
-    return (
-      <div className="flex flex-col h-full max-w-md mx-auto bg-white relative overflow-hidden sm:rounded-[40px] sm:my-8 sm:h-[844px] sm:border-8 sm:border-gray-900">
-        <ProfileSelection 
-          members={members} 
-          onSelect={handleProfileSelect} 
-          onCreateFirst={handleCreateFirstProfile}
-        />
-      </div>
-    );
-  }
+ if (!activeProfile) {
+  return (
+    <div className="flex flex-col min-h-screen bg-white relative overflow-hidden">
+      <ProfileSelection 
+        members={members} 
+        onSelect={handleProfileSelect} 
+        onCreateFirst={handleCreateFirstProfile}
+      />
+    </div>
+  );
+}
 
   const renderContent = () => {
     switch (activeTab) {
@@ -688,7 +688,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-md mx-auto bg-white relative overflow-hidden sm:rounded-[40px] sm:my-8 sm:h-[844px] sm:border-8 sm:border-gray-900">
+    <div className="flex flex-col min-h-screen bg-white relative overflow-hidden">
       {/* Birthday Celebration Overlay */}
       <AnimatePresence>
         {showBirthday && (
