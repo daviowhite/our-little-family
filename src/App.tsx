@@ -123,12 +123,21 @@ export default function App() {
   // Stats State
   const [stats, setStats] = useState({
     height: "0 ft",
+    heightUpdatedAt: null,
+
     weight: "0 kg",
+    weightUpdatedAt: null,
+
     daysTogether: 0,
+    daysTogetherUpdatedAt: null,
+
     steps: "4,230",
+    stepsUpdatedAt: null,
+
     memoriesCount: 0,
-    nextBirthday: { days: 0, name: "" },
-    lastUpdated: formatMonthYear(),
+    memoriesUpdatedAt: null,
+
+    nextBirthday: { days: 0, name: "", date: "" },
   });
 
   useEffect(() => {
@@ -178,6 +187,10 @@ export default function App() {
     setMilestones(ms);
     setMemories(mems);
     setFamilyStories(fs);
+
+    if (activeProfile) {
+      updateStats(activeProfile);
+    }
   };
 
   const updateStats = (profileId: string) => {
@@ -187,9 +200,16 @@ export default function App() {
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     const latestRecord = profileRecords[0];
-    const nextBday = calculateNextBirthday(members);
 
-    // Find earliest date in the app to calculate days together
+    const profileMemories = memories
+      .filter((m) => m.memberId === profileId)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    const latestMemory = profileMemories[0];
+
+    const activeMember = members.find((m) => m.id === profileId);
+    const nextBday = activeMember ? calculateNextBirthday(activeMember) : null;
+
     const allDates = [
       ...familyStories.map((s) => s.date),
       ...memories.map((m) => m.date),
@@ -199,15 +219,30 @@ export default function App() {
 
     const earliestDate = allDates[0] || new Date().toISOString().split("T")[0];
 
-    setStats({
-      height: latestRecord?.height ? `${latestRecord.height} cm` : "--",
-      weight: latestRecord?.weight ? `${latestRecord.weight} kg` : "--",
+    setStats((prev) => ({
+      ...prev,
+
+      height: latestRecord?.height ? `${latestRecord.height} cm` : prev.height,
+      heightUpdatedAt: latestRecord?.height
+        ? latestRecord.date
+        : prev.heightUpdatedAt,
+
+      weight: latestRecord?.weight ? `${latestRecord.weight} kg` : prev.weight,
+      weightUpdatedAt: latestRecord?.weight
+        ? latestRecord.date
+        : prev.weightUpdatedAt,
+
       daysTogether: calculateDaysTogether(earliestDate),
-      steps: "--",
-      memoriesCount: memories.length,
-      nextBirthday: nextBday || { days: 0, name: "" },
-      lastUpdated: formatMonthYear(),
-    });
+
+      steps: prev.steps,
+
+      memoriesCount: profileMemories.length,
+      memoriesUpdatedAt: latestMemory?.date
+        ? latestMemory.date
+        : prev.memoriesUpdatedAt,
+
+      nextBirthday: nextBday || prev.nextBirthday,
+    }));
   };
 
   const checkBirthday = (profileId: string) => {
@@ -418,7 +453,7 @@ export default function App() {
                 title="Height"
                 icon={Ruler}
                 value={stats.height}
-                updatedAt={stats.lastUpdated}
+                updatedAt={stats.heightUpdatedAt}
                 bgColor="bg-blue-50"
                 iconColor="text-blue-500"
               />
@@ -426,7 +461,7 @@ export default function App() {
                 title="Weight"
                 icon={Weight}
                 value={stats.weight}
-                updatedAt={stats.lastUpdated}
+                updatedAt={stats.weightUpdatedAt}
                 bgColor="bg-blue-50"
                 iconColor="text-blue-500"
               />
@@ -434,7 +469,7 @@ export default function App() {
                 title="Days Together"
                 icon={Calendar}
                 value={stats.daysTogether}
-                updatedAt={stats.lastUpdated}
+                updatedAt={stats.daysTogetherUpdatedAt}
                 bgColor="bg-blue-50"
                 iconColor="text-blue-500"
               />
@@ -442,7 +477,7 @@ export default function App() {
                 title="Steps"
                 icon={Footprints}
                 value={stats.steps}
-                updatedAt={stats.lastUpdated}
+                updatedAt={stats.stepsUpdatedAt}
                 bgColor="bg-blue-50"
                 iconColor="text-blue-500"
               />
@@ -450,7 +485,7 @@ export default function App() {
                 title="Memories"
                 icon={Image}
                 value={stats.memoriesCount}
-                updatedAt={stats.lastUpdated}
+                updatedAt={stats.memoriesUpdatedAt}
                 bgColor="bg-blue-50"
                 iconColor="text-blue-500"
               />
@@ -458,7 +493,7 @@ export default function App() {
                 title="Next Birthday"
                 icon={Gift}
                 value={`${stats.nextBirthday.days} days`}
-                updatedAt={stats.lastUpdated}
+                updatedAt={null}
                 bgColor="bg-blue-50"
                 iconColor="text-blue-500"
               />
@@ -551,6 +586,7 @@ export default function App() {
                             {new Date(memory.date).toLocaleDateString("en-US", {
                               month: "short",
                               day: "numeric",
+                              year: "numeric",
                             })}
                           </span>
                         </div>
