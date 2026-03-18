@@ -771,7 +771,7 @@ export default function App() {
               <div className="flex flex-col gap-6">
                 {!hasExtraMembers ? (
                   <div className="bg-white rounded-2xl p-8 text-center">
-                    <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-blue-500 mx-auto mb-4">
+                    <div className="w-16 h-16 bg-[#007AFF] rounded-full flex items-center justify-center text-white mx-auto mb-4">
                       <Users size={32} />
                     </div>
                     <h3 className="text-lg font-bold text-gray-900 mb-2">
