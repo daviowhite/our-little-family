@@ -768,15 +768,6 @@ export default function App() {
         return (
           <div className="space-y-8 animate-in fade-in duration-500 pb-20">
             <section>
-              <div className="flex justify-end items-center mb-4">
-                <button
-                  onClick={() => setActiveForm("familyMember")}
-                  className="text-sm font-bold text-[#007AFF] bg-blue-50 px-4 py-1.5 rounded-full active:scale-95 transition-transform"
-                >
-                  Add Member
-                </button>
-              </div>
-
               <div className="flex flex-col gap-6">
                 {!hasExtraMembers ? (
                   <div className="bg-white rounded-2xl p-8 text-center">
