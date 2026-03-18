@@ -1050,7 +1050,7 @@ export default function App() {
           {activeTab === "home" && (
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center overflow-hidden active:scale-90 transition-transform shadow-sm"
+              className="w-10 h-10 rounded-full bg-[#007AFF] flex items-center justify-center overflow-hidden active:scale-90 transition-transform"
             >
               {members.find((m) => m.id === activeProfile)?.image ? (
                 <img
