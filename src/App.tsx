@@ -1060,7 +1060,7 @@ export default function App() {
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <span className="text-sm font-bold text-blue-500">
+                <span className="text-sm font-bold text-white">
                   {getInitials(
                     members.find((m) => m.id === activeProfile)?.name || ""
                   )}
