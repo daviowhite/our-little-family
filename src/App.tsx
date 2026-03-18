@@ -973,7 +973,7 @@ export default function App() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl"
+              className="bg-white w-full max-w-sm rounded-[32px] overflow-hidden"
             >
               <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
